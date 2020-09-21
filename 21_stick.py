@@ -36,25 +36,3 @@ sticks_game(first_round)
 
 
 
-
-
-        #tiles_left -= computer_move
-        #tiles_left = 18 -2 =16
-
-
-#print(initial)
-
-#tile = 21
-
-#players = input("Please type the number of human players: ")
-
-#players = 2
-#rounds = 1
-
-
-
-
-
-
-
-
