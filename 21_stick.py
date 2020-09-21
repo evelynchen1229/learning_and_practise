@@ -27,7 +27,8 @@ def sticks_game (tiles_left):
 
 
 initial_tile = 21
-first_move = random.randrange(1,3,1)
+robot_first_move = 1
+
 print(f"Robot's first move: {first_move}")
 first_round = initial_tile -first_move
 print(first_round)
