@@ -1,5 +1,5 @@
 '''human player == 1'''
-import random
+#import random
 
 def robot_move(remain_tile):
 
@@ -37,6 +37,8 @@ first_round = initial_tile - robot_first_move
 print(first_round)
 
 sticks_game(first_round)
+
+
 
 
 
