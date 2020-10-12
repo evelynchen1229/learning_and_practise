@@ -22,22 +22,15 @@ class Format:
         self.argument2 = argument2
 
     def get_argument(self):
-        text = self.get_argument()
+        #text = self.get_argument()
         return (self.argument1 + self.argument2)
       # can I/ how do I use *args with getter?
 
-<<<<<<< HEAD
     @property
     def div(self):
         text = self.get_argument()
         new_text = body("div",text)
         return Format(new_text)
-=======
-
-    def div(self):
-        test = self.get_argument()
-        return f"<div>{text}</div>"
->>>>>>> 70223ee56baa7afb8192d36bc4d9c51435246704
 
     @property
     def p(self):
@@ -70,11 +63,6 @@ print(getter(test.div.p))
 #print(test.h1())
 # print(Format.div("foo")) error message: str doesn't have attribute get_argument
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
->>>>>>> 70223ee56baa7afb8192d36bc4d9c51435246704
 '''part 2'''
 
 class div(Format):
@@ -91,11 +79,9 @@ class div(Format):
 
 
 
-<<<<<<< HEAD
 test = div("foo")
 #print(test.p())
 #print(test.p.span())
-=======
 test = div("foo","bar")
 print(test.p())
 #print(test.p.span())
@@ -103,25 +89,3 @@ print(test.p())
 
 
 
-=======
-#'''part 2'''
-#
-#class div(Format):
-#    def __init__(self, argument1,argument2=""):
-#        Format.__init__(self, argument1, argument2="")
-#        #super().__init__(self,argument)
-#
-#    def p(self):
-#        text = self.get_argument()
-#        return f"<div><p>{text}</p><div>"
-#  #  def p.span(self):
-#  #      text = self.get_argument()
-#  #      return "<div><p><span>text</span></p></div>"
-#
-#
-#
-#test = div("foo")
-#print(test.p())
-##print(test.p.span())
->>>>>>> 95d5eda9cf5f75bfbd4907fb61dd181f367fbbfa
->>>>>>> 70223ee56baa7afb8192d36bc4d9c51435246704
