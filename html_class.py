@@ -4,10 +4,12 @@ class Format:
         self.argument2 = argument2
 
     def get_argument(self):
+        text = self.get_argument()
         return (self.argument1 + self.argument2)
 
+
     def div(self):
-        text = self.get_argument()
+        test = self.get_argument()
         return f"<div>{text}</div>"
 
     def p(self):
@@ -25,7 +27,6 @@ class Format:
         return f"<h1>{text}</h1>"
 
 
-
 '''part 1'''
 #test = Format("foo")
 test = Format("foo","bar")
@@ -34,6 +35,7 @@ print(test.p())
 print(test.span())
 print(test.h1())
 # print(Format.div("foo")) error message: str doesn't have attribute get_argument
+
 
 '''part 2'''
 
@@ -51,6 +53,10 @@ class div(Format):
 
 
 
-test = div("foo")
+test = div("foo","bar")
 print(test.p())
 #print(test.p.span())
+
+
+
+
