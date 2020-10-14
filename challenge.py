@@ -1,3 +1,22 @@
+'''challenge codewars'''
+from collections import Counter
+def scramble(s1, s2):
+    s1 = s1.rstrip()
+    s2 = s2.rstrip()
+    char1 = Counter(s1)
+    char2 = Cunter(s2)
+
+    key1 = list(char1.keys())
+    key2 = list(char2.keys())
+
+    for i in key2:
+        if i not in key1 or char2[i] > char1[i]:
+            return False
+    return True
+
+
+
+
 '''challenge 0'''
 def power(a,n):
     for i in range(2,n+1):
