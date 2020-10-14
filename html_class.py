@@ -52,11 +52,20 @@ class Format:
         new_text = body("h1",text)
         return Format(new_text)
 
+    def body(self):
+      text = self
+      text = self.get_argument()
+      return f"<body>{text}</body>"
+
+'''test'''
+test1 = Format.body("foo")
 
 '''part 1'''
 #test = Format("foo")
 test = Format("foo","bar")
 print(getter(test.div.p))
+
+#print(dir(Format.p))
 #print(test.div.p.span())
 #print(test.p())
 #print(test.span())

@@ -38,7 +38,7 @@ print(test.get_length())
 print(test.get_height())
 print(test.get_volume())
 print(test.get_surface_area())
-
+test.get_width()
 
 
 
