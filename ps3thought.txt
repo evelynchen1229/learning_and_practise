@@ -1,0 +1,23 @@
+for  play the same hand
+
+rounds = int(input("how many rounds do you want to play?"))
+if rounds == 1:
+  play_game(wordlist)
+
+else:
+  n = 1
+  whole rounds >1 and n <= rounds:
+    if n ==1:
+      play_game(wod_list)
+    else:
+      question = input("do you want to play the same hand?")
+      if question == "y":
+        play_hand(hand,wordlist) #problem is how to get the hand stored from previous round
+        rounds -=1
+        n += 1
+      else:
+        play_game(word_list)
+        rounds -=1
+        n += 1
+
+
