@@ -7,22 +7,22 @@ from datetime import datetime
 import shutil
 import win32com.client as win32
 
-path = r"path\test"
-dirs = os.listdir(path)
-dest = r"path\Archive"
-for file in dirs:
-    file_path = os.path.join(path,file)
+#path = r"path\test"
+#dirs = os.listdir(path)
+#dest = r"path\Archive"
+#for file in dirs:
+#    file_path = os.path.join(path,file)
 #    print(file_path)
 #try:
-    if os.path.isfile(file_path):
-        shutil.move(file_path,dest)
+#    if os.path.isfile(file_path):
+#        shutil.move(file_path,dest)
 #except:
     #else: print("error");
 #print (os.path.isfile(file_path));
 currentYear = datetime.now().strftime("%Y")
 currentMonth = datetime.now().strftime("%m")
 today= str(currentMonth)+str(currentYear)
-output_file = r"path{}.csv".format(today)
+output_file = r".\{}.csv".format(today)
 
 host,username,password = 'HOST','UID','PSD'
 udaExec = teradata.UdaExec (appName = "test", version ="1.0", logConsole=False)
@@ -42,7 +42,7 @@ with udaExec.connect(method="odbc", system=host, username=username,password=pass
 #print(today);
 outlook = win32.Dispatch('outlook.application')
 mail = outlook.CreateItem(0)
-mail.To = 'email'
+mail.To = 'evelyn.chen@lexisnexis.co.uk'
 mail.Subject = 'Test'
 mail.Body = """Hi,
 
