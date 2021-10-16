@@ -1,0 +1,1 @@
+result.xml has something to do with test result showing on Jenkins
