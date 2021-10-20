@@ -1,0 +1,56 @@
+1634747665546	geckodriver	INFO	Listening on 127.0.0.1:46017
+1634747666051	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "41527" "-no-remote" "-profile" "/tmp/rust_mozprofilewkoJz2"
+1634747666497	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilewkoJz2/search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:41527/devtools/browser/12eeff93-4d24-4f12-919d-0bce17ff64a8
+1634747667606	Marionette	INFO	Listening on port 36465
+1634747667681	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1634747669296	Marionette	INFO	Stopped listening on port 36465
+JavaScript error: resource:///modules/Interactions.jsm, line 209: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIUserIdleService.removeIdleObserver]
+!!! error running onStopped callback: TypeError: callback is not a function
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1634747669742	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+stop()@CDP.jsm:104
+close()@RemoteAgent.jsm:138
+1634747775460	geckodriver	INFO	Listening on 127.0.0.1:50059
+1634747775464	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "46463" "-no-remote" "-profile" "/tmp/rust_mozprofilek7VWGt"
+1634747775931	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofilek7VWGt/search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:46463/devtools/browser/ced5a202-c9a9-4ae5-87a3-f14adb7208d9
+1634747776893	Marionette	INFO	Listening on port 33961
+1634747776990	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1634747778552	Marionette	INFO	Stopped listening on port 33961
+JavaScript error: resource:///modules/Interactions.jsm, line 209: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIUserIdleService.removeIdleObserver]
+!!! error running onStopped callback: TypeError: callback is not a function
+1634747779042	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+stop()@CDP.jsm:104
+close()@RemoteAgent.jsm:138
+1634748360818	geckodriver	INFO	Listening on 127.0.0.1:42943
+1634748361322	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--remote-debugging-port" "56997" "-no-remote" "-profile" "/tmp/rust_mozprofileJumkF0"
+1634748361830	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /tmp/rust_mozprofileJumkF0/search.json.mozlz4", (void 0)))
+DevTools listening on ws://localhost:56997/devtools/browser/1b05e0cc-0338-417a-855b-4fba07770713
+1634748362837	Marionette	INFO	Listening on port 37761
+1634748362941	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1634748364502	Marionette	INFO	Stopped listening on port 37761
+JavaScript error: resource:///modules/Interactions.jsm, line 209: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIUserIdleService.removeIdleObserver]
+console.error: services.settings: 
+  main/query-stripping Signature failed  TypeError: NetworkError when attempting to fetch resource.
+!!! error running onStopped callback: TypeError: callback is not a function
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1634748366880	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+stop()@CDP.jsm:104
+close()@RemoteAgent.jsm:138
