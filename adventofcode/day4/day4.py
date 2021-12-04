@@ -8,18 +8,17 @@ new_line = []
 bingo_candidates = []
 bingo_sets = []
 
-def update_number(array,number):
-    for a in array:
+def check_board(board,order):
+    for a in board:
         if number in a:
             position = a.tolist().index(number)
             a[position] = -1
-    return array
+    return board
 
-def bingo(array):
+def bingo(board):
     if -5 in array.sum(axis=1) or -5 in array.sum(axis=0):
-        return 'bingo'
-    else:
-        pass
+        return True
+    return False
 
 def residual_sum(array):
     total = array.sum()
@@ -61,29 +60,29 @@ for i in range(1,num_sets + 1):
     bingo_sets.append(bingo_set)
 
 # part 1
-def game (array_sets,num,set_number=0):
-    if set_number < len(array_sets):
-        array = array_sets[set_number]
-        update_array = update_number(array,num)
-        result = bingo(update_array)
-        if result == 'bingo':
+def game (boards,order,board_index=0):
+    if board_index < len(boards):
+        board = boards[board_index]
+        updated_board = check_board(board,order)
+        board_is_bingoed = bingo(updated_board)
+        if board_is_bingoed:
        #     print(num)
             sub_total = residual_sum(update_array)
             bingo_result = num * sub_total
            # print(str(bingo_result).isnumeric())
-            #print(set_number,num)
+            #print(board_index,num)
            # print(update_array)
            # print('bingo')
            # print(bingo_result)
             #return bingo_result 
-            return set_number
+            return board_index
 
         else:
-            array_sets[set_number] = update_array
-            set_number += 1
-            return game(array_sets,num, set_number)
+            boards[board_index] = updated_board
+            board_index += 1
+            return game(boards,num, board_index)
     else:
-        return array_sets
+        return boards
 # not working as expected
 #def game_set(array_sets,numbers=0):
 #    if numbers < candidates:
@@ -109,6 +108,7 @@ def game (array_sets,num,set_number=0):
 #bingo_sets.pop(23)
 #bingo_sets.pop(58)
 #bingo_sets.pop(70)
+
 #bingo_sets.pop(3)
 #bingo_sets.pop(9)
 #bingo_sets.pop(78)
@@ -126,22 +126,21 @@ def game (array_sets,num,set_number=0):
 
 # part 2
 #print(len(bingo_candidates))
-def lst_game(array_sets):
-    number_sets = len(array_sets)
+def lst_game(boards):
+    num_boards = len(boards)
     bingos=[]
-    for num in bingo_candidates:
+    for order in bingo_candidates:
 #        print(num)
-        result = game(array_sets,num)
+        result = game(boards,order)
 #        print(result,num)
+        some_bingoed = str(result).isnumeric()
         if str(result).isnumeric():
             print(result,num)
-            bingos.append(result)
- #           bingos.append(final_results)
-            array_sets.pop(result)
+            bingos.append(result) #           bingos.append(final_results) array_sets.pop(result)
             
                 
 
     return bingos
-last_bingos = lst_game(bingo_sets)
 
+last_bingos = lst_game(bingo_sets)
 print(last_bingos)
