@@ -1,37 +1,45 @@
 import numpy as np
-bingo_sets = []
+'''list of numbers for bingos'''
+orders= []
+'''array of bingo boards'''
+initial_boards = []
+'''array of bingoed boards'''
+bingoed_boards = []
+'''list of bingoed scores'''
 scores = []
-array_1 = np.array([[2,3,4,1,9],
-    [5,6,7,3,9],
-    [1,2,3,4,5],
-    [11,12,13,14,15],
-    [11,14,15,67,2]
-    ],dtype=object
-    )
-#for a in array_1:
-#    if 2 in a:
-#        print(a)
-#        for i in a:
-#            if i == 2:
-#                positon = a.tolist().index(i)
-#                print(positon)
-array_2 = np.array([[1,2,3,20,32],
-    [5,6,7,42,51],
-    [3,4,5,1,121],
-    [2,4,5,6,3],
-    [10,9,8,7,6]
-    ],dtype=object)
 
-array_3 = np.array([[0,24,2,145,4],
-    [2,3,4,5,1],
-    [21,22,23,24,25],
-    [2,5,334,12,41],
-    [2,25,24,15,166]
-    ],dtype=object)
-for array in (array_1, array_2, array_3):
-    bingo_sets.append(array)
-bingo_candidates = [2,3,4,5,6]
+# step 1: constract the list of bingo numbers and array of bingo boards
+with open('input.txt') as f:
+    lines = f.readlines()
+    bingo_numbers = lines[0].strip().split(',')
+    for i in bingo_numbers:
+        i = int(i)
+        orders.append(i)
 
+    new_line = []
+
+    for line in lines[1:]:
+        if len(line) == 1 and '' in line:
+            pass
+        else:
+            numeric_lines = []
+            line = line.strip().split(' ')
+            for i in line:
+                if i != '':
+                    i = int(i)
+                    numeric_lines.append(i)
+            new_line.append(numeric_lines)
+f.close()
+
+num_boards = int(len(new_line)/5)
+
+num_orders = len(orders)
+
+for i in range(1,num_boards + 1):
+    board = np.array(new_line[(i-1)*5 : i*5])
+    initial_boards.append(board)
+
+# step 2: mark boards when a number is called
 def check_board(board,order):
     for b in board:
         if order in b:
@@ -69,13 +77,16 @@ def game(boards,order,board_index = 0):
             score = order * unmarked_sum(checked_board)
             # put score in the collection
             scores.append(score)
-            # remove the bingoed board from the game
-            boards.pop(board_index)
+            # collect the bingoed board from the game
+            bingoed_boards.append(boards)
         else:
             pass
 
         board_index += 1
         return game(boards,order,board_index)
+    # remove bingoed boards from the game
+    for bingoed_board in bingoed_boards:
+
 
     board_score_dict = {'boards':boards,
             'score':scores
@@ -85,24 +96,25 @@ def game(boards,order,board_index = 0):
 
 def bingo_game(boards,orders_index = 0):
     final_scores = []
-    num_orders = len(bingo_candidates)
     if orders_index < num_orders:
-        order = bingo_candidates[orders_index]
-        print(order)
+        order = orders[orders_index]
         order_result = game(boards,order)
-
         boards = order_result['boards']
-        print(boards)
         final_scores.append(order_result['score'])
-        print(final_scores)
         orders_index += 1
         if len(boards) > 0:
             return bingo_game(boards,orders_index)
         return final_scores
     return final_scores
 
+test = bingo_game(initial_boards)[0]
+print(test[0],test[-1])
 
-print(bingo_sets[0])
-lst = [list(x) for x in bingo_sets]
-print(lst)
-print(lst.index(list(array_2)))
+
+
+
+
+
+
+
+
