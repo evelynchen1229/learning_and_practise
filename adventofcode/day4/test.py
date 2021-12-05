@@ -102,7 +102,14 @@ def bingo_game(boards,orders_index = 0):
     return final_scores
 
 
+array_4 = np.array([[1000,24,2,145,4],
+    [2,3,4,5,1],
+    [21,22,23,24,25],
+    [2,5,334,12,41],
+    [2,25,24,15,166]
+    ],dtype=object)
 print(bingo_sets[0])
-lst = [list(x) for x in bingo_sets]
-print(lst)
-print(lst.index(list(array_2)))
+is_in_list = np.all(np.all(array_2 == bingo_sets,axis=1))
+mask = np.isin(array_2,bingo_sets)
+print(mask)
+print (False in mask)
