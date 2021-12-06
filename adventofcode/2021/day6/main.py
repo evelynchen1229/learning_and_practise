@@ -71,12 +71,13 @@ def total_fish(fish,days):
                 # find how many of the fish created can actually have time to reproduce
                 fish_can_reproduce = num_of_fish_can_reproduce(fish,days)
                 if fish_can_reproduce == 0:
-                    return num_fish_created 
+                    total_fish = 1 + num_fish_created # add the initial fish
+                    return total_fish
                 else:
                 # repeat the procedure
                        pass
 
-test = total_fish(3,15)
+test = total_fish(1,15)
 print(test)
 
 
