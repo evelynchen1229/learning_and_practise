@@ -39,3 +39,4 @@ for coordinate in diagonal_lines:
             for (dx, dy) in zip(range(0,distance_x - 1, -1), range(0,distance_y - 1, -1)):
                 print([x_1 - dx, y_1 - dy])
 
+
