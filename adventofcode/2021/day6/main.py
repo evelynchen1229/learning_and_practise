@@ -37,5 +37,3 @@ print(fish_volume)
 
 huge_number_of_fish = number_of_fish(initial_state,256)
 print(huge_number_of_fish)
-
-print('hello Rossella')
