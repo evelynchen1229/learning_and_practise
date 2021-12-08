@@ -1,12 +1,26 @@
 from construction import constructor
 import numpy as np
+import math
 
-crab_position = constructor('input.txt')
+crab_position = constructor('test_input.txt')
 max_position = max(crab_position)
 
 size = len(crab_position)
 fuel_cost = []
 # part 1
+#method 1
+crab_position.sort()
+size = len(crab_position)
+medium_location = math.floor(size/2)
+medium_crab = crab_position[medium_location]
+fuel_cost = 0
+for crab in crab_position:
+    fuel_cost += abs(crab-medium_crab)
+
+print(fuel_cost)
+
+# method 2
+fuel_cost = []
 for i in range(0,max_position + 1):
     alignment = []
     alignment.append(i)
