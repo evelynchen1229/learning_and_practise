@@ -1,8 +1,8 @@
 from construction import constructor
 import numpy as np
 
-heightmaps = constructor('test_input.txt')
-#heightmaps = constructor('input.txt')
+#heightmaps = constructor('test_input.txt')
+heightmaps = constructor('input.txt')
 #print(heightmaps)
 
 low_points = []
@@ -65,7 +65,7 @@ for row in range(0,num_rows):
             low_point_positions.append(low_point_position)
             
 #print(lowest_points)
-#print(sum(risk_level))
+print(sum(risk_level))
 #print(low_point_positions)
 
 # part 2
@@ -86,6 +86,7 @@ for low_point_position in low_point_positions:
     # probelm: lower and upper columns is not based on the lower point row
     for i in range(col,-1,-1):
         if heightmaps[row][i] != 9:
+            print(heightmaps[row][i])
             basin_size += 1
             if i == 0:
                 start_column = 0
@@ -94,6 +95,7 @@ for low_point_position in low_point_positions:
             break
     for i in range(col, num_cols):
         if heightmaps[row][i] != 9:
+            print(heightmaps[row][i])
             basin_size += 1
             if i == num_cols - 1:
                 end_column = i
@@ -105,34 +107,158 @@ for low_point_position in low_point_positions:
     basin_size -= 1
 
     for column in range(start_column, end_column + 1):
-        if row == 0:
-            for r in range(1, num_rows):
-                if heightmaps[r][column] != 9:
-                    basin_size += 1
-                else:
-                    break
-        elif row == num_rows - 1:
-            for r in range(row - 1, -1, -1):
-                if heightmaps[r][column] != 9:
-                    basin_size += 1
-                else:
-                    break
+        if column == start_column:
+            if row == 0:
+                for r in range(1, num_rows):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        basin_size += 1
+                        for c in range(0,start_column):
+                            if start_column == 0:
+                                pass
+                            else:
+                                if heightmaps[r][c] != 9:
+                                    print(heightmaps[r][c])
+                                    basin_size += 1
+                                else:
+                                    break
+                    else:
+                        break
+            elif row == num_rows - 1:
+                for r in range(row - 1, -1, -1):
+                    if heightmaps[r][column] != 9:
+                        basin_size += 1
+                        print(heightmaps[r][column])
+
+                        for c in range(0,start_column):
+                            if start_column == 0:
+                                pass
+                            else:
+                                if heightmaps[r][c] != 9:
+                                    print(heightmaps[r][c])
+                                    basin_size += 1
+                                else:
+                                    break
+                    else:
+                        break
+            else:
+                for r in range(row + 1, num_rows):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        basin_size += 1
+                        for c in range(0,start_column):
+                            if start_column == 0:
+                                pass
+                            else:
+                                if heightmaps[r][c] != 9:
+                                    basin_size += 1
+                                    print(heightmaps[r][c])
+                                else:
+                                    break
+                    else:
+                        break
+    
+                for r in range(row - 1, -1, -1):
+                    if heightmaps[r][column] != 9:
+                        basin_size += 1
+                        print(heightmaps[r][column])
+                        for c in range(0,start_column):
+                            if start_column == 0:
+                                pass
+                            else:
+                                if heightmaps[r][c] != 9:
+                                    basin_size += 1
+                                    print(heightmaps[r][c])
+                                else:
+                                    break
+                    else:
+                        break
+
+    
+        elif column == end_column and column != num_cols - 1:
+            if row == 0:
+                for r in range(1, num_rows):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        for c in range(end_column ,num_cols):
+                            if heightmaps[r][c] != 9:
+                                print(heightmaps[r][c])
+                                basin_size += 1
+                            else:
+                                break
+                    else:
+                        break
+            elif row == num_rows - 1:
+                for r in range(row - 1, -1, -1):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        for c in range(end_column ,num_cols):
+                            if heightmaps[r][c] != 9:
+                                print(heightmaps[r][c])
+                                basin_size += 1
+                            else:
+                                break
+                    else:
+                        break
+            else:
+                for r in range(row + 1, num_rows):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        for c in range(end_column ,num_cols):
+                            if heightmaps[r][c] != 9:
+                                print(heightmaps[r][c])
+                                basin_size += 1
+                            else:
+                                break
+                    else:
+                        break
+    
+                for r in range(row - 1, -1, -1):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        for c in range(end_column ,num_cols):
+                            if heightmaps[r][c] != 9:
+                                print(heightmaps[r][c])
+                                basin_size += 1
+                            else:
+                                break
+                    else:
+                        break
         else:
-            for r in range(row + 1, num_rows):
-                if heightmaps[r][column] != 9:
-                    basin_size += 1
-                else:
-                    break
 
-            for r in range(row - 1, -1, -1):
-                if heightmaps[r][column] != 9:
-                    basin_size += 1
-                else:
-                    break
-
+            if row == 0:
+                for r in range(1, num_rows):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        basin_size += 1
+                    else:
+                        break
+            elif row == num_rows - 1:
+                for r in range(row - 1, -1, -1):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        basin_size += 1
+                    else:
+                        break
+            else:
+                for r in range(row + 1, num_rows):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        basin_size += 1
+                    else:
+                        break
+    
+                for r in range(row - 1, -1, -1):
+                    if heightmaps[r][column] != 9:
+                        print(heightmaps[r][column])
+                        basin_size += 1
+                    else:
+                        break
+    
     basins.append(basin_size)
 
 print(basins)
-basins.sort()
+basins.sort(reverse=True)
+print(basins)
 largest_basins = basins[0] * basins[1] * basins[2]
 print(largest_basins)
