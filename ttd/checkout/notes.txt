@@ -1,0 +1,25 @@
+Unit Test Isolation with Dummies, Fakes, Stubs, Spies, and Mocks
+
+What are Test Doubles?
+Almost all code depends (i.e. collaborates) with other parts of the system
+
+Those other parts fo the system are not always easy to replicate in the unit test environment or would make tests slow if used directly
+
+Test doubles are objects that are used inunt tests as replacements to the real production system collaborators
+
+
+
+
+
+Types of Test Doubles:
+
+Dummy - Objects that can be passed around as necessary but do not have any types of test implementation and should never be userd
+Fake - These object generally have a simplified functional implementation of a particular interface tha is adequate for tsting but not for production
+Stub - These objects provide implementations with canned answers that are suitable for the test
+Spies - These objects provide implementations that record the values that were passed in so they can be used by the test
+Mocks - These objects are pre-programmed to expect specific calls and parameters and can throw exceptions when necessary
+
+
+
+Mocking Framework
+unittest.moLck

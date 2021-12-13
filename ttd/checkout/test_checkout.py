@@ -1,3 +1,4 @@
+import pytest
 from pytest import mark
 from pytest import fixture
 from checkout import Checkout
@@ -32,3 +33,7 @@ def test_canApplyDiscountRule(checkout):
     checkout.addItem('a')
     checkout.addItem('a')
     assert checkout.caculateTotal() == 5
+
+def test_ExceptionWithBadItem(checkout):
+    with pytest.raises(Exception):
+        checkout.addItem('c')

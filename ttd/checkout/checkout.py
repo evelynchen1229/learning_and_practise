@@ -4,21 +4,23 @@ class Checkout:
         def __init__(self,nbrItem,price):
             self.nbrItem = nbrItem
             self.price = price
-    
+
     def __init__(self):
         self.prices = {}
         self.discounts = {}
         self.items = {}
         self.total = 0
-    
+
     def addDiscount(self,item,nbrItem,price):
         discount = self.Discount(nbrItem,price)
-        self.discounts[item] = discount      
+        self.discounts[item] = discount
 
     def addItemPrice(self,item,price):
         self.prices[item] = price
 
     def addItem(self,item):
+        if item not in self.prices:
+            raise Exception("Bad  Item")
         if item in self.items:
             self.items[item] += 1
         else:
