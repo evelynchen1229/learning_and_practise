@@ -22,10 +22,10 @@ def adjacent(position):
     down_right = (x+1, y-1)
 
     adjacent_positions = [left, right, above, below, upper_left, upper_right, down_left, down_right]
-
     legal_adjacents = [p for p in adjacent_positions if 0 <= p[0] < cols and 0 <= p[1] < rows]
 
     return legal_adjacents
+
 def energy_number(position,level_map):
     row = position[1]
     col = position[0]
@@ -38,7 +38,6 @@ def flash_level_list( energy_level_map):
             if energy_level_map[row][col] == 10:
                 flashy.append((col, row))
     return flashy
-
 
 def adjacent_level_increase(flash_position, energy_level_map):
     adjacent_positions = adjacent(flash_position)
@@ -65,7 +64,6 @@ def adjacent_level_increase(flash_position, energy_level_map):
 
     return energy_level_map
 
-
 def flash( energy_level_map , position ):
     'level increase by 1 in the beginning of the step'
     energy_level_map += 1
@@ -91,7 +89,6 @@ def num_flash(step, energy_level_map = sample_lines['energy_level'],  position =
         flashes += np.count_nonzero(energy_level_map == 0)
 
     return flashes
-
 
 def syncronise(step = 0,energy_level_map = test_lines['energy_level'],position = test_lines['position']):
     num_flashes = 0
