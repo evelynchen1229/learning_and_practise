@@ -18,11 +18,23 @@ def constructor(input_file):
             start.append(l[0])
         else:
             route.append(l)
+    
+    size_route = len(route)
 
-    for l in route:
-        if 'end' not in l:
-            reverse_l = l[::-1]
+    for i in range(0,size_route):
+        path = route[i]
+        if 'end' not in path:
+            # rever the caves on a path
+            # l[::-1] only works for one letter cave
+            l_caves = path.split('-')
+            l_caves.reverse()
+            reverse_l = ('-').join(l_caves)
             reverse_route.append(reverse_l)
+        else:
+            end_caves = path.split('-')
+            end_caves.pop(end_caves.index('end'))
+            new_end_cave = end_caves[0] + '-' + 'end'
+            route[i] = new_end_cave
 
     route = route + reverse_route
 
@@ -38,3 +50,5 @@ def constructor(input_file):
             }
 
     return path
+
+
