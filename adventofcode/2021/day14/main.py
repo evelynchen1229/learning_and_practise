@@ -1,7 +1,7 @@
 from construction import constructor
 from collections import Counter
 
-challenge = constructor('input.txt')
+challenge = constructor('sample.txt')
 challenge_polymer = challenge['polymer']
 challenge_pair = challenge['pair_rule']
 
@@ -44,3 +44,41 @@ challenge = polymerization(challenge_polymer,10)
 occurance = Counter(challenge).most_common()
 difference = occurance[0][-1] - occurance[-1][-1]
 print("part 1: ",difference)
+
+
+# part 2
+
+pair_replace = []
+for p in challenge_pair:
+    replacement = p[0][0]+p[-1]+p[0][-1]
+    pair_replace.append([p[0],replacement])
+def polymer_pair(polymer_template , pair_replacement = pair_replace):
+    polymer_list = []
+    polymer_size = len(polymer_template)
+    for n in range(0,polymer_size - 1):
+        polymer_list.append(polymer_template[n: n+2])
+    
+    polymer_list_size = len(polymer_list)
+    for p in pair_replacement:
+        for n in range(0,polymer_list_size):
+            value = polymer_list[n]
+            if p[0] == value:
+                polymer_list[n] = p[-1]
+    for n in range(0,polymer_list_size - 1):
+        value = polymer_list[n]
+        if value[-1] == polymer_list[n+1][0]:
+            polymer_list[n] = value[:-1]
+    polymer_template = ''.join(polymer_list)
+
+    return polymer_template 
+
+def part2_polymerization(polymer_template,step=0,pair_replacement=pair_replace):
+    for i in range(0,step):
+        polymer_template = polymer_pair(polymer_template)
+
+    return polymer_template
+test = part2_polymerization(challenge_polymer,40)
+print(len(test))
+occurance = Counter(test).most_common()
+difference = occurance[0][-1] - occurance[-1][-1]
+print("part 2: ",difference)
