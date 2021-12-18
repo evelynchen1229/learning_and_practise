@@ -1,84 +1,137 @@
 from construction import constructor
 from collections import Counter
 
-challenge = constructor('sample.txt')
+challenge = constructor('input.txt')
 challenge_polymer = challenge['polymer']
 challenge_pair = challenge['pair_rule']
 
-def inserting(polymer_template, pair_rule = challenge_pair):
-    polymer_size = len(polymer_template)
-    process = []
-    for i in range(0,polymer_size-1):
-        pair = polymer_template[i:i+2]
-        process.append(pair)
-    last_item = process[-1]
-    process_size = len(process)
+insert_letters = [i[-1] for i in challenge_pair]
+pairs = [i[0] for i in challenge_pair]
 
-    for n in range(0,process_size - 1):
-        value = process[n]
-        for r in pair_rule:
-            if value in r:
-                if process[n][-1] == process[n+1][0]:
-                    process[n] = value[0] + r[-1]
-                else:
-                    process[n] = value[0] + r[-1] + value[-1]
-    process = process[:-1]
-    for r in pair_rule:
-        if last_item in r:
-            last_item = last_item[0] + r[-1] + last_item[-1]
-            process.append(last_item)
+occurance = Counter(insert_letters).most_common()
+most_common = occurance[0][0]
+least_common = occurance[-1][0]
 
-    polymer_template = ''.join(process)
+def dedup(polymer_pair,occurance=[]):
+    size = len(polymer_pair)
+    pair = []
+    agg_occurance = []
+    for n in range(0,size):
+        p = polymer_pair[n]
 
-    return polymer_template
+        if p not in pair:
+            pair.append(p)
+            position = pair.index(p)
+            if len(occurance) == 0:
+                agg_occurance.append(1)
+            else:
+                occur = occurance[n]
+                agg_occurance.append(occur)
+        else:
+            position = pair.index(p)
+            if len(occurance) == 0:
+                agg_occurance[position] += 1
+            else:
+                occur = occurance[n]
+                agg_occurance[position] += occur
 
-def polymerization(polymer_template,step=0,pair_rule =challenge_pair):
-    for i in range(0,step):
-        polymer_template = inserting(polymer_template)
+    pair_occur = {'pair':pair,
+            'occurance':agg_occurance
+            }
+    return pair_occur
 
-    return polymer_template
+def insert_pair(polymer_pair,occurance=[], insert_letter =[],insert_occur=[],insert = insert_letters, insert_pair = pairs):
+    dedupping = dedup(polymer_pair,occurance)
+    dedupped_pair = dedupping['pair']
+    dedupped_occurance = dedupping['occurance']
+    new_pairs = []
+    new_occur = []
+    for p in dedupped_pair:
+        index = dedupped_pair.index(p)
+        p_occur = dedupped_occurance[index]
+        letter_inserted = insert_letters[insert_pair.index(p)]
+        # need to find a way without appending repeated pairs
+        #for n in range(0,p_occur):
+        new_pair_first = p[0] + letter_inserted
+        new_pair_second = letter_inserted + p[-1]
+        if new_pair_first not in new_pairs:
+            new_pairs.append(new_pair_first)
+            new_occur.append(p_occur)
+        else:
+            position = new_pairs.index(new_pair_first)
+            new_occur[position] += p_occur
 
-# part 1
-challenge = polymerization(challenge_polymer,10)
+        if new_pair_second not in new_pairs:
+            new_pairs.append(new_pair_second)
+            new_occur.append(p_occur)
+        else:
+            position = new_pairs.index(new_pair_second)
+            new_occur[position] += p_occur
 
-occurance = Counter(challenge).most_common()
-difference = occurance[0][-1] - occurance[-1][-1]
-print("part 1: ",difference)
+        if letter_inserted not in insert_letter:
+            insert_letter.append(letter_inserted)
+            insert_occur.append(p_occur)
+        else:
+            position = insert_letter.index(letter_inserted)
+            insert_occur[position] += p_occur
 
 
-# part 2
+    insert_dict = {'letters':insert_letter,
+                'letters_occur':insert_occur,
+                'new_pair':new_pairs,
+                'new_occur':new_occur
+                }
+    return insert_dict
 
-pair_replace = []
-for p in challenge_pair:
-    replacement = p[0][0]+p[-1]+p[0][-1]
-    pair_replace.append([p[0],replacement])
-def polymer_pair(polymer_template , pair_replacement = pair_replace):
+
+def total_pair(polymer_pair,step=0):
+    initial_polymer = ''.join(polymer_pair)
+    insert_letter=[]
+    insert_occur=[]
+    p_size = len(initial_polymer)
+    for n in range(0,p_size):
+        letter = initial_polymer[n]
+        if letter not in insert_letter:
+            insert_letter.append(letter)
+            insert_occur.append(1)
+        else:
+            position = insert_letter.index(letter)
+            insert_occur[position] += 1
+    occurance = []
+    for n in range(0,step):
+        polymer_insertting = insert_pair(polymer_pair,occurance,insert_letter,insert_occur)
+        polymer_pair = polymer_insertting['new_pair']
+        occurance = polymer_insertting['new_occur']
+        insert_letter = polymer_insertting['letters']
+        insert_occur = polymer_insertting['letters_occur']
+
+   #not sure why +1 though
+    difference = max(insert_occur)-min(insert_occur) +1
+
+    most_least_occured = {'letters':insert_letter,
+            'insert_occur':insert_occur,
+            'difference':difference,
+            'polymer':polymer_pair,
+            'occurance':occurance
+            }
+
+
+    return most_least_occured
+
+def set_up(polymer_template = challenge_polymer):
+    size_polymer = len(polymer_template)
     polymer_list = []
-    polymer_size = len(polymer_template)
-    for n in range(0,polymer_size - 1):
-        polymer_list.append(polymer_template[n: n+2])
-    
-    polymer_list_size = len(polymer_list)
-    for p in pair_replacement:
-        for n in range(0,polymer_list_size):
-            value = polymer_list[n]
-            if p[0] == value:
-                polymer_list[n] = p[-1]
-    for n in range(0,polymer_list_size - 1):
-        value = polymer_list[n]
-        if value[-1] == polymer_list[n+1][0]:
-            polymer_list[n] = value[:-1]
-    polymer_template = ''.join(polymer_list)
+    for n in range(0,size_polymer - 1):
+        polymer_list.append(polymer_template[n : n + 2])
 
-    return polymer_template 
+    return polymer_list
 
-def part2_polymerization(polymer_template,step=0,pair_replacement=pair_replace):
-    for i in range(0,step):
-        polymer_template = polymer_pair(polymer_template)
+#part1
+test = total_pair(set_up(),10) 
+print("part1: ",test['difference'])
 
-    return polymer_template
-test = part2_polymerization(challenge_polymer,40)
-print(len(test))
-occurance = Counter(test).most_common()
-difference = occurance[0][-1] - occurance[-1][-1]
-print("part 2: ",difference)
+#part2
+test = total_pair(set_up(),40) 
+print("part2: ",test['difference'])
+
+
