@@ -1,159 +1,140 @@
-'''
-A-star algorithm
-F = G + H
-
-F is the total cost of the node.
-G is the distance between the current node and the start node.
-H is the heuristic — estimated distance from the current node to the end node.
-
-1. Add the starting square (or node) to the open list.
-2. Repeat the following:
-A) Look for the lowest F cost square on the open list. We refer to this as the current square.
-B). Switch it to the closed list.
-C) For each of the 8 squares adjacent to this current square …
-If it is not walkable or if it is on the closed list, ignore it. Otherwise do the following.
-If it isn’t on the open list, add it to the open list. Make the current square the parent of this square. Record the F, G, and H costs of the square.
-If it is on the open list already, check to see if this path to that square is better, using G cost as the measure. A lower G cost means that this is a better path. If so, change the parent of the square to the current square, and recalculate the G and F scores of the square. If you are keeping your open list sorted by F score, you may need to resort the list to account for the change.
-D) Stop when you:
-Add the target square to the closed list, in which case the path has been found, or
-Fail to find the target square, and the open list is empty. In this case, there is no path.
-3. Save the path. Working backwards from the target square, go from each square to its parent square until you reach the starting square. That is your path.
-'''
-
-# import heap queue for priority queue
-import heapq
+from construction import constructor
 from warnings import warn
 
-class Node():
-    '''A Node class for A* pathfinding'''
+challenge = constructor('input.txt')
+maze = challenge['position']
+cost = challenge['values']
+maze_length = len(cost[0])
+maze_height = len(cost)
+start = min(maze)
+end = max(maze)
 
+diagonal = False
+
+class Node():
     def __init__(self, parent=None, position=None):
         self.parent = parent
         self.position = position
 
-        self.g = 0
-        self.h = 0
-        self.f = 0
+        self.g = cost[self.position[1]][self.position[0]] 
+        self.h = 0 #(end[0] - self.position[0]) ** 2 + (end[1] - self.position[1]) ** 2
+        self.f = self.g + self.h 
 
-     def __eq__(self, other):
-         return self.position == other.position
+    def __eq__(self, other):
+        return self.position == other.position
 
-     def __repr(self):
-         return f"{self.position} - g : {self.g} h: : {self.h} f: {self.f}"
+    def __repr__(self):
+        return f"{self.position}"
+    
+    def __lt__(self, other):
+        return self.f < other.f
 
-     # define less than
-     def __lt__(self, other):
-         return self.f < other.f
+    def __gt__(self, other):
+        return self.f > other.f
 
-     # define greater than
-     def __gt__(slef,other):
-         return self.f > other.f
 
-def return_path(current_code):
+def adjacents(current_node):
+    x = current_node.position[0]
+    y = current_node.position[1]
+
+    above = [x, y-1]
+    below = [x, y+1]
+    left = [x-1, y]
+    right = [x+1, y]
+    diagonal_upperleft = [x-1, y-1]
+    diagonal_upperright = [x+1, y-1]
+    diagonal_lowerleft = [x-1, y+1]
+    diagonal_lowerright = [x+1, y+1]
+
+    if diagonal:
+        adjacent_nodes = [above, below, left, right, diagonal_upperleft, diagonal_upperright, diagonal_lowerleft, diagonal_lowerright]
+    else:
+        adjacent_nodes = [above, below, left, right]
+
+    legal_adjacents = [adjacent for adjacent in adjacent_nodes if 0 <= adjacent[0] < maze_length and 0 <= adjacent[1] < maze_height]
+
+    return legal_adjacents
+
+def return_path(current_node):
     path = []
-    current = current_code
+    node_cost = 0
+    current = current_node
     while current is not None:
         path.append(current.position)
+        node_cost += current.f
+        current = current.parent
 
-    return path[::-1]
+    least_cost = {'path': path[::-1],
+            'cost': node_cost}
+    return least_cost 
 
-def astar(maze, start, end):
-    ''' returns a list of tuples as path'''
+def current_cost(current_node):
+    node_cost = 0
+    current = current_node
+    while current is not None:
+        node_cost += current.f
+        current = current.parent
+    return node_cost
+    
+def prioritise(open_list, current_node):
+    list_size = len(open_list)
+    if list_size == 0:
+        open_list.append(current_node)
+    elif current_cost(current_node) > max([current_cost(node) for node in open_list]):
+        open_list.append(current_node)
+    else:
 
-    '''
-    // initialise both open and closed lists
-    let open list an empty list of nodes
-    let closed list an empty list of nodes
+        for n in range(0, list_size):
+            existing_node = open_list[n]
+            if current_cost(existing_node) == current_cost(current_node):
+                open_list = open_list[:n + 1] + [current_node] + open_list[n + 1:]
+                break
+            elif current_cost(existing_node) > current_cost(current_node):
+                open_list = open_list[:n] + [current_node] + open_list[n:]
+                break
+    
+    return open_list
 
-    // Add start node into open list, leave f to 0
-    '''
-        # create a start, end node
+
+
+def astar():
     start_node = Node(None, start)
     start_node.g = start_node.h = start_node.f = 0
 
     end_node = Node(None, end)
-    end_node.g = end_node.h = end_node.f = 0
 
-
-    # create empty open closed lists
     open_list = []
     closed_list = []
 
-    # add start node
-    heapq.heapify(open_list)
-    heapq.heappush(open_list, start_node)
+    open_list.append(start_node)
 
-    # adding a stop condition
-    outer_iteration = 0
-    max_iteration = (len(maze[0]) * len(maze)) // 2
 
-    # adjacent nodes for whether diagnoal nodes allowable 
-    adjacent_nodes = ((0,-1), (0,1), (1,0), (-1,0))
-    
-    if diagnoal_allowed:
-        adjacent_nodes = ((0,-1), (0,1), (1,0), (-1,0), (-1,-1), (-1,1), (1, -1), (1,1),)
-
-    '''
-    // Loop until find the end
-    whie open_list is not empty
-        // get current node
-        // find end node
-        // if next node isn't end node, get all possible next steps - generate children
-        // add current node as parent, within children, calculate cost (f, g, h) for all the next steps and add to the heap queue
-            child.g = cost from start to child node,
-            child.h = cost from child node to end
-            child.f = child.g + child.f
-
-        // check whether child is alredy in open list (find cheaper way to go to the same child node)
-            if child already in open list:
-                if child.f > existing.f: 
-                    then pass
-                else:
-                    add child to the open_list
-    '''
-
-    while len(open_list) > 0:
-        outer_iteration += 1
-        
-        if outer_iteration > max_iteration:
-            warn("too many iterations")
-            return current_node
-
-        # get the current node
-        current_node = heapq.heappop(open_list)
+    while len(open_list ) > 0 :
+        current_node = open_list[0]
+        open_list.pop(0)
         closed_list.append(current_node)
-
-        # find the goal
+    
         if current_node == end_node:
-            return return_path(current_code)
+            return return_path(current_node)
+        else:
+            next_nodes = adjacents(current_node)
+            for node in next_nodes:
+                new_node = Node(current_node, node)
+                if len([open_node for open_node in open_list if new_node.position == open_node.position and current_cost(new_node) >= current_cost(open_node)]) > 0:
+                    pass
+                elif len([closed_node for closed_node in closed_list if new_node.position == closed_node.position and current_cost(new_node) >= current_cost(closed_node)]) > 0:
+                    pass
+                else:
+                    open_list = prioritise(open_list,new_node)
+                
 
-        # generate children
-        children = []
-        for new_position in adjacent_position:
-            # get only legal adjacents
-            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
-            if node_position[0] < 0 or node_position[0] >= len(maze[0]) or node_position[1] < 0 or node_position[1] >= len(maze):
-                pass
-
-            new_node = Node(current_node, node_position)
-            children.append(new_node)
-
-        # loop through children
-        for child in children:
-            # whether child in closed list
-            if len([closed_child for closed_child in closed_list if closed_child == child]) > 0:
-                pass
-
-            child.g = current_node.g + 1
-            child.h = (child.position[0] - end_node.position[0]) ** 2 + (child.position[1] - end_node.position[1]) ** 2
-            child.f = child.g + child.h
-
-            # whether child in open list
-            if len([open_node for open_node in open_list if child.position == open_node.position and child.g > open_node.g]) > 0:
-                pass
-
-            heapq.heappush(open_list, child)
-    warn ("couldn't get a path")
+    warn("no path found")
     return None
+    
+def main():
+    path = astar()
+    print(path)
 
+if __name__ == '__main__':
+    main()
 
