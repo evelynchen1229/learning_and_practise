@@ -1,7 +1,9 @@
 from construction import constructor
 from warnings import warn
+from bigmap import fullmaze 
 
-challenge = constructor('input.txt')
+#challenge = constructor('input.txt')
+challenge = fullmaze('input.txt')
 maze = challenge['position']
 cost = challenge['values']
 maze_length = len(cost[0])
@@ -17,7 +19,7 @@ class Node():
         self.position = position
 
         self.g = cost[self.position[1]][self.position[0]] 
-        self.h = 0 #(end[0] - self.position[0]) ** 2 + (end[1] - self.position[1]) ** 2
+        self.h = 0#  (end[0] - self.position[0])   + (end[1] - self.position[1]) 
         self.f = self.g + self.h 
 
     def __eq__(self, other):
@@ -61,7 +63,7 @@ def return_path(current_node):
     current = current_node
     while current is not None:
         path.append(current.position)
-        node_cost += current.f
+        node_cost += current.g
         current = current.parent
 
     least_cost = {'path': path[::-1],
@@ -90,7 +92,10 @@ def prioritise(open_list, current_node):
                 open_list = open_list[:n + 1] + [current_node] + open_list[n + 1:]
                 break
             elif current_cost(existing_node) > current_cost(current_node):
-                open_list = open_list[:n] + [current_node] + open_list[n:]
+                if existing_node.position == current_node.position:
+                    open_list[n] = current_node
+                else:
+                    open_list = open_list[:n] + [current_node] + open_list[n:]
                 break
     
     return open_list
@@ -108,9 +113,13 @@ def astar():
 
     open_list.append(start_node)
 
+    i = 0
 
     while len(open_list ) > 0 :
+        i += 1
         current_node = open_list[0]
+        if i % 1000 == 0:
+            print(current_node)
         open_list.pop(0)
         closed_list.append(current_node)
     
