@@ -19,6 +19,8 @@ class Node():
         self.position = position
 
         self.g = cost[self.position[1]][self.position[0]] 
+        ''' dijkstra algorithum worked for both parts, but really slow (17 hours for part2)
+        A-star algorithum with manhanton distance worked for part 1, but part2 got a higher result and took 5 hours to run'''
         self.h = 0#  (end[0] - self.position[0])   + (end[1] - self.position[1]) 
         self.f = self.g + self.h 
 
