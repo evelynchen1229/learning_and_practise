@@ -23,21 +23,14 @@ for the_file in os.listdir(folder):
     except Exception as e:
         print(e)
 
-#print("connect to teradata")
+
 print("connect to redshift")
-#host,username,password = 'HOST','UID', 'PWD'
-#udaExec = teradata.UdaExec (appName="test", version="1.0", logConsole=False)
-#with udaExec.connect(method="odbc",system="TDP0", username="mutsomx",
-#                            password="mutsomx14", driver="Teradata") as session:
-#with udaExec.connect(method="odbc",system="TDP0", username="chenyx",
- #                           password="chenyx9", driver="Teradata") as session:
+
 
 conn = psycopg2.connect(dbname= 'db', 
       host = 'host', 
       port= 'port', 
-      #user= 'chenyx', 
 	  user = 'username',
-      #password= '!Uf2KfxQ'
 	  password = r'password'
 	  )
 query ="""
