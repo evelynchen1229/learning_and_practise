@@ -16,8 +16,8 @@ import sys
 today = date.today().strftime('%d_%m_%y')
 print('connecting 12c_dataanalytics')
 ## CREDIT DAT FROM LAW
-dsn_tns_base = cx_Oracle.makedsn('PSDB3684.LEXIS-NEXIS.COM', '1521', service_name='GBIPRD1.ISPPROD.LEXISNEXIS.COM')
-conn_base = cx_Oracle.connect(user='DATAANALYTICS', password='DatPwd123Z', dsn=dsn_tns_base)
+dsn_tns_base = cx_Oracle.makedsn('host', '1521', service_name='service')
+conn_base = cx_Oracle.connect(user='username', password='password', dsn=dsn_tns_base)
 
 # chambers
 print('fetching chambers')

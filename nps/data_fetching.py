@@ -9,8 +9,8 @@ import os
 import sys
 
 # data connection to RECON
-dsn_tns_recon = cx_Oracle.makedsn('psdb3119.lexisnexis.com', '1521', service_name='CUSTHUB.ispprod.lexisnexis.com')
-conn_recon = cx_Oracle.connect(user='recon', password='Recon1121Z', dsn=dsn_tns_recon)
+dsn_tns_recon = cx_Oracle.makedsn('host', 'port', service_name='service')
+conn_recon = cx_Oracle.connect(user='username', password='password', dsn=dsn_tns_recon)
 
 # SQL queries for usage threshold NPS data, as well as hub no email stats
 sql_legal_usg = '''

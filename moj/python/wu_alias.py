@@ -7,11 +7,11 @@ import shutil
 
 '''connect to gdw and get email and wu_alias'''
 print('connect to redshift in DBeaver')
-conn = psycopg2.connect(dbname= 'gdw', 
-      host = 'prod-gdw-database.business.aws.lexisnexis.com', 
-      port= '5439', 
-      user= 'chenyx', 
-      password= '!Uf2KfxQ')
+conn = psycopg2.connect(dbname= 'dbname', 
+      host = 'host', 
+      port= 'port', 
+      user= 'username', 
+      password= 'password')
 query ="""
 select distinct wu.user_signon_id,al.web_user_alias_id wa
 --,trim(wu.web_user_first_name) web_user_first_name,trim(wu.web_user_last_name) web_user_last_name

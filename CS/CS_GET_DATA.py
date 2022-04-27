@@ -12,11 +12,11 @@ from sqlalchemy.engine import create_engine
 #conn_base = cx_Oracle.connect(user='DATAANALYTICS', password='DatPwd123Z', dsn=dsn_tns_base) 
 DIALECT = 'oracle'
 SQL_DRIVER = 'cx_oracle'
-USERNAME = 'DATAANALYTICS' 
-PASSWORD = 'DatPwd123Z' 
-HOST = 'PSDB3684.LEXIS-NEXIS.COM'
+USERNAME = 'username' 
+PASSWORD = 'password' 
+HOST = 'host'
 PORT = 1521
-SERVICE = 'GBIPRD1.ISPPROD.LEXISNEXIS.COM'
+SERVICE = 'service'
 ENGINE_PATH_WIN_AUTH = DIALECT + '+' + SQL_DRIVER + '://' + USERNAME + ':' + PASSWORD +'@' + HOST + ':' + str(PORT) + '/?service_name=' + SERVICE
 
 engine = create_engine(ENGINE_PATH_WIN_AUTH)

@@ -32,13 +32,13 @@ print("connect to redshift")
 #with udaExec.connect(method="odbc",system="TDP0", username="chenyx",
  #                           password="chenyx9", driver="Teradata") as session:
 
-conn = psycopg2.connect(dbname= 'gdw', 
-      host = 'prod-gdw-database.business.aws.lexisnexis.com', 
-      port= '5439', 
+conn = psycopg2.connect(dbname= 'db', 
+      host = 'host', 
+      port= 'port', 
       #user= 'chenyx', 
-	  user = 'gopimeng',
+	  user = 'username',
       #password= '!Uf2KfxQ'
-	  password = r'z%x4qbeX'
+	  password = r'password'
 	  )
 query ="""
     select
