@@ -1,0 +1,11 @@
+{
+    "api_details":{
+        "url":"https://sra-prod-apim.azure-api.net/datashare/api/V1/organisation/GetAll",
+        "subkey":"5e889de29ef346ab8600b97855be40c8"
+    },
+    "target_connection": {
+		"username": "PDL",
+		"password": "PudObi123Z",
+		"host": "PSDB3684.LEXIS-NEXIS.COM/GBIPRD1.ISPPROD.LEXISNEXIS.COM"
+	}
+}
