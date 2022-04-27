@@ -8,8 +8,6 @@ from pandas import ExcelWriter
 import os
 import sys
 from sqlalchemy.engine import create_engine
-#dsn_tns_base = cx_Oracle.makedsn('PSDB3684.LEXIS-NEXIS.COM', '1521', service_name='GBIPRD1.ISPPROD.LEXISNEXIS.COM') 
-#conn_base = cx_Oracle.connect(user='DATAANALYTICS', password='DatPwd123Z', dsn=dsn_tns_base) 
 DIALECT = 'oracle'
 SQL_DRIVER = 'cx_oracle'
 USERNAME = 'username' 
