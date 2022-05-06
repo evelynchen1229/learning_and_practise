@@ -1,4 +1,3 @@
-'Note: Teradata has migrated to Redshift'
 print("import modules")
 #import teradata
 import psycopg2
