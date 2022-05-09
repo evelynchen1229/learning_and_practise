@@ -1,4 +1,3 @@
-print("import modules")
 #import teradata
 import psycopg2
 import csv
