@@ -1,0 +1,25 @@
+jupyter nbconvert Summary_NPS.ipynb --template toc2 --no-input --no-prompt
+
+Siml, Jan (LNG-LON): Question: How to export files into interactive HTML? 
+you need just this step: conda install "nbconvert=5.6.1" --no-update-deps
+
+From <https://teams.microsoft.com/multi-window/?agent=electron&version=21050411810> 
+
+Question: How to export files into interactive HTML?
+You need special notebook extension called TOC2 (table of contents2)..
+Installing it (you really need just #3 but it's safer this way):
+pip install ipywidgets jupyter nbextension enable --py widgetsnbextension
+pip install jupyter_contrib_nbextensions jupyter_nbextensions_configurator jupyter nbextensions_configurator enable --user
+Generating it:
+# open command prompt in the same folder as your script (eg, jump there like:   
+cd "C:\Users\simljx\Documents\Python work\GIT - DPI_report_automation"
+# generate the embedded HTML file
+jupyter nbconvert filename_of_your_analysis.ipynb --template toc2
+If you get an error about toc2 template not found or something like that, it's a backward compatibility problem, you can just overwrite this package:
+conda install "nbconvert=5.6.1" --no-update-deps
+Alternatively, you'll need to change one configuration file -- let me know and I'll help you!
+(based on https://stackoverflow.com/questions/51137110/right-place-to-put-custom-nbconvert-templates   and changing C:\Users\simljx\.jupyter\jupyter_nbconvert_config.json )
+
+Right place to put custom nbconvert templates
+I've made a custom nbconvert template and want it to be accessible from any folder where I launch nbconvert utility. Where should I put my template? I couldn't find anything in official docs. I have 
+stackoverflow.com

@@ -1,120 +1,107 @@
 from construction import constructor
+from collections import Counter
 
-test = constructor('small_sample.txt')
+challenge = constructor('input.txt')
 
-print(test)
+start_cave = challenge['start']
 
-start_cave = test['start']
-
-other_caves = test['route']
+other_caves = challenge['route']
 num_caves = len(other_caves)
-small_cave = test['small_cave']
-print(small_cave)
+small_cave = challenge['small_cave']
 
 paths = []
+
+def last_cave(path):
+    caves = path.split('-')
+    final_cave = caves[-1]
+    return  final_cave
+
+def first_cave(path):
+    caves = path.split('-')
+    beginning_cave = caves[0]
+    return beginning_cave
+
+
+def previous_cave(path):
+    caves = path.split('-')
+    previous = caves[-2]
+    return previous
+
 
 def connecting_caves(path,caves = other_caves):
     next_cave = []
     for cave in caves:
-        if path[-1] == cave[0]:
+        
+        if last_cave(path) == first_cave(cave):
             next_cave.append(cave)
     return next_cave
 
+def small_cave_illegal_enter(path,small_caves,challenge_part):
+    occurances = []
+    for s_cave in small_caves:
+        pattern = s_cave + '-' + s_cave
+        occurance = path.count(pattern)
+        occurances.append(occurance)
+#    if len([o for o in occurances if o >1]) == 0:
+    if max(occurances) <= 1:
+        return False
+    elif challenge_part == 'part2' and Counter(occurances)[2] == 1 and max(occurances) <=2:
+        #len([o for o in occurances if o >1]) == 1 and max(occurances) <= 2:
+        return False
+    else:
+        return True
 
-def possible_routes(path = '', paths = [],  caves = other_caves):
-    print(path)
+
+
+def possible_routes(challenge_part,path = '', paths = [],  caves = other_caves,small_caves =small_cave ):
     associated_caves = connecting_caves(path)
     num_links = path.count('-')
-    print("associated_caves",associated_caves)
     for cave in associated_caves:
-        print(cave)
         if num_links < 4:
-            print("link less than 4")
             new_path = path + '-' + cave
-            print(new_path)
             if 'end' in new_path and new_path not in paths:
                 paths.append(new_path)
-                print("initial path",paths)
             else:
-                paths = possible_routes(new_path,paths)
-        elif path[-7:-4] != cave:
-            print("path for link more than 4",path)
-            print(cave)
+                paths = possible_routes(challenge_part,new_path,paths)
+
+        elif previous_cave(path) != cave:
             if 'end' in path and path not in paths:
                 paths.append(path)
 
             else:
-                print("path",path)
                 new_path = path + '-' + cave
-                if 'end' in new_path and new_path not in paths:
-                    paths.append(new_path)
+                if small_cave_illegal_enter(new_path,small_cave,challenge_part) == True:
+                    pass
                 else:
-                    if (cave.islower() == True or (cave.islower() == False and cave.isupper() == False) ) and cave in path:
-                        print("repeated",cave,new_path)
-                        pass
+                    if 'end' in new_path and new_path not in paths:
+                        paths.append(new_path)
                     else:
-                        paths =  possible_routes(new_path,paths)
- #       print("after loop",path)
-
-    #else:
-     #   print("path loop",path)
-     #   paths = possible_routes(path)
-    print("final paths",paths)
+                        if small_cave_illegal_enter(new_path,small_cave,challenge_part) == True:
+                            pass
+                        else:
+                            paths =  possible_routes(challenge_part,new_path,paths)
 
 
     return paths
-#    for n in range(starting_point,num_caves):
-#        print(caves[n])
-#        if path[-1] == caves[n][0] and caves[n] != path[-7:-4]:
-#            print("caves associated",caves[n])
-#            path = path + '-' + caves[n]
-#            print(path)
-#            if 'end' in caves[n] and path not in paths:
-#                paths.append(path)
-#            else:
-#               return possible_routes(path,caves)
-#
-#
-#    print(paths)
-#
-#
-#    return paths
-#
-test_route = possible_routes('b')
-#print(test_route)
-num_routes = 0
-legal_routes_b = []
-for  r in test_route:
 
-    occurances = []
-    for s_cave in small_cave:
-        pattern = s_cave + '-' + s_cave
-        occurance = r.count(pattern)
-        occurances.append(occurance)
-    if len([o for o in occurances if o >1]) == 0:
-        num_routes += 1
-        legal_routes_b.append(r)
-    else:
-        print (r)
-print(num_routes)
-print(legal_routes_b)
+part1_total_route = 0
+part1_all_paths = []
 
+for  s in start_cave:
+    s_routes = possible_routes('part1',s)
+    number_routes = len(s_routes)
 
-test_route = possible_routes('A')
-#print(test_route)
-num_routes = 0
-legal_routes_a = []
-for  r in test_route:
+part1_total_route += number_routes
+#part1_all_paths.append(s_routes)
 
-    occurances = []
-    for s_cave in small_cave:
-        pattern = s_cave + '-' + s_cave
-        occurance = r.count(pattern)
-        occurances.append(occurance)
-    if len([o for o in occurances if o >1]) == 0:
-        num_routes += 1
-        legal_routes_a.append(r)
-    else:
-        print (r)
-print(num_routes)
-print(legal_routes_a)
+print("part 1: ",part1_total_route)
+
+part2_total_route = 0
+part2_all_paths = []
+for  s in start_cave:
+    s_routes = possible_routes('part2',s)
+    number_routes = len(s_routes)
+
+part2_total_route += number_routes
+#part2_all_paths.append(s_routes)
+print("part 2: ",part2_total_route)
