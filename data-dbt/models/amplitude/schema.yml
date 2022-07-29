@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: amplitude_event
+    description: "A view for all amplitude events"
+
+  - name: amplitude_workouts
+    description: "A view for all class related amplitude events"
+
+  - name: amplitude_device
+    description: "A view for device types for usage after Jan 2022"
+
+  - name: amplitude_profile
+    description: "A view for user_id profile_id pair within a session"

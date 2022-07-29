@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: amplitude
+    database: dev
+    schema: stg_amplitude
+    tables:
+      - name: event
