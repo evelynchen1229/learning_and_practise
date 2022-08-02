@@ -133,23 +133,105 @@ WITH user_pool AS (
             ON tm.user_id = tws.user_id AND tws.session_id = tm.session_id
     WHERE tm.user_id IS NULL
 )
--- total number of sessions when users play classes have seen users clicked filter, favourites, and collections to view classes
+
+-- total number of sessions when users play classes have seen users
+-- clicked filter, favourites, and collections to view classes
 , non_home_screen_session_detail AS (
-SELECT DISTINCT ae.user_id, ae.session_id,ae.event_type, sis. membership_status
-, CASE WHEN ae.event_type LIKE '%filter%' THEN 'filter_used'
-  WHEN ae.event_type LIKE '%collections%' THEN 'collection_used'
-  WHEN ae.event_type LIKE '%favourites%' THEN 'favourites_used'
-  WHEN ae.event_type LIKE '%search%' THEN 'search_bar_used'
-  ELSE  event_type
- END AS event_category
-FROM stg_amplitude.event ae
-JOIN sessions_in_scope sis ON sis.session_id = ae.session_id AND ae.user_id = sis.user_id
-WHERE event_type LIKE 'nav_filter%'
-OR event_type LIKE '%collections%'
-OR event_type = 'nav_toggle_favourites'
-OR event_type LIKE 'nav_search%'
+    SELECT DISTINCT
+        ae.user_id
+        , ae.session_id
+        , ae.event_type
+        , sis.membership_status
+        , CASE WHEN ae.event_type LIKE '%filter%' THEN 'filter_used'
+            WHEN ae.event_type LIKE '%collections%' THEN 'collection_used'
+            WHEN ae.event_type LIKE '%favourites%' THEN 'favourites_used'
+            WHEN ae.event_type LIKE '%search%' THEN 'search_bar_used'
+            ELSE ae.event_type
+        END AS event_category
+    FROM stg_amplitude.event AS ae
+        INNER JOIN sessions_in_scope AS sis
+            ON sis.session_id = ae.session_id AND ae.user_id = sis.user_id
+    WHERE ae.event_type LIKE 'nav_filter%'
+        OR ae.event_type LIKE '%collections%'
+        OR ae.event_type = 'nav_toggle_favourites'
+        OR ae.event_type LIKE 'nav_search%'
 )
 
-SELECT owner_id
-FROM membership
+, home_screen_only_session AS (
+    SELECT DISTINCT
+        sis.user_id
+        , sis.session_id
+        , sis.membership_status
+    FROM sessions_in_scope AS sis
+        LEFT JOIN non_home_screen_session_detail AS nhss
+            ON sis.session_id = nhss.session_id
+                AND sis.user_id = nhss.user_id
+    WHERE nhss.user_id IS NULL
+)
+
+-- do people normally scroll down the pages
+-- and how many pages do people normally scroll down
+, home_screen_explore AS (
+    SELECT DISTINCT
+        hsos.user_id
+        , hsos.session_id
+        , ae.event_type
+        , hsos.membership_status
+    FROM home_screen_only_session AS hsos
+        LEFT JOIN stg_amplitude.event AS ae
+            ON hsos.session_id = ae.session_id
+                AND hsos.user_id = ae.user_id
+                AND ae.event_type LIKE 'nav_arrow%'
+)
+
+SELECT
+    COUNT(DISTINCT user_id) AS number_of_unique_users
+    , COUNT(DISTINCT user_id || '-' || session_id)
+    AS number_of_real_sessions
+    , membership_status
+    , 'total_class start sessions' AS event_type
+FROM sessions_in_scope
+GROUP BY membership_status
+UNION ALL
+SELECT
+    COUNT(DISTINCT user_id) AS number_of_unique_users
+    , COUNT(DISTINCT user_id || '-' || session_id)
+    AS number_of_sessions
+    , membership_status
+    , 'non home screen checked' AS event_type
+FROM non_home_screen_session_detail
+GROUP BY membership_status
+UNION ALL
+SELECT
+    COUNT(DISTINCT user_id) AS number_of_unique_users
+    , COUNT(DISTINCT user_id || '-' || session_id)
+    AS number_of_sessions
+    , membership_status
+    , event_category AS event_type
+FROM non_home_screen_session_detail
+GROUP BY event_category, membership_status
+UNION ALL
+SELECT
+    COUNT(DISTINCT user_id) AS number_of_unique_users
+    , COUNT(DISTINCT user_id || '-' || session_id)
+    AS number_of_sessions
+    , membership_status
+    , 'home screen checked only' AS event_type
+FROM home_screen_only_session
+GROUP BY membership_status
+UNION ALL
+SELECT
+    COUNT(DISTINCT user_id) AS number_of_unique_users
+    , COUNT(DISTINCT user_id || '-' || session_id)
+    AS number_of_sessions
+    , membership_status
+    , CASE WHEN event_type IS NULL THEN 'first page home screen only'
+        ELSE 'more pages checked from home screen'
+    END AS event_type
+FROM home_screen_explore
+GROUP BY
+    CASE WHEN event_type IS NULL THEN 'first page home screen only'
+        ELSE 'more pages checked from home screen'
+    END
+    , membership_status
 ;
