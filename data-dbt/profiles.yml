@@ -3,34 +3,34 @@ amplitude_event:
     dev:
       dbname: dev
       host: redshift-cluster-1.ct0wmhwbmwm9.us-east-1.redshift.amazonaws.com
-      password: 1ndieF!txr
+      password: 
       port: 5439
       schema: dbt_amplitude
       threads: 1
       type: redshift
-      user: echen
+      user: 
   outputs:
     test:
       dbname: dev
       host: redshift-cluster-1.ct0wmhwbmwm9.us-east-1.redshift.amazonaws.com
-      password: 1ndieF!txr
+      password: 
       port: 5439
       schema: dbt_amplitude_test
       threads: 1
       type: redshift
-      user: echen
+      user:
   target: test
 postgres_template:
   outputs:
     dev:
       dbname: template
       host: localhost
-      pass: Indie$2912
+      pass: 
       port: 5432
       schema: public
       threads: 1
       type: postgres
-      user: evelyn
+      user: 
     prod:
       dbname:
       - dbname
