@@ -1,0 +1,50 @@
+amplitude_event:
+  outputs:
+    dev:
+      dbname: dev
+      host: redshift-cluster-1.ct0wmhwbmwm9.us-east-1.redshift.amazonaws.com
+      password: 1ndieF!txr
+      port: 5439
+      schema: dbt_amplitude
+      threads: 1
+      type: redshift
+      user: echen
+  outputs:
+    test:
+      dbname: dev
+      host: redshift-cluster-1.ct0wmhwbmwm9.us-east-1.redshift.amazonaws.com
+      password: 1ndieF!txr
+      port: 5439
+      schema: dbt_amplitude_test
+      threads: 1
+      type: redshift
+      user: echen
+  target: test
+postgres_template:
+  outputs:
+    dev:
+      dbname: template
+      host: localhost
+      pass: Indie$2912
+      port: 5432
+      schema: public
+      threads: 1
+      type: postgres
+      user: evelyn
+    prod:
+      dbname:
+      - dbname
+      host:
+      - host
+      pass:
+      - prod_password
+      port:
+      - port
+      schema:
+      - prod_schema
+      threads:
+      - 1 or more
+      type: postgres
+      user:
+      - prod_username
+  target: dev

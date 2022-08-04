@@ -11,7 +11,7 @@ fields_list = ['owner','sku','is_active','period_end_time','period_start_time','
 fields = ','.join(fields_list)
 headers = {}
 url = 'https://graph.oculus.com/application/subscriptions'
-logging.basicConfig(filename='test.log',level=logging.DEBUG)
+logging.basicConfig(filename='test_load_to_bigquery.log',level=logging.DEBUG)
 
 def get_secret():
 
@@ -45,39 +45,60 @@ params = {"access_token":api_token, "fields":fields,"limit":limit}
 def get_subscribers(urls = url, header = headers, param = params):
     now = datetime.datetime.now()
     n = 0
-    while True:
+    retries = 0
+    # stop the process when one error consecutively retried 10 times
+    while retries < 10:
         try:
             current_time = datetime.datetime.now().strftime("%m-%d-%Y_ %H-%M-%S")
             current_year = datetime.datetime.now().strftime("%Y")
             current_month = datetime.datetime.now().strftime("%m")
             current_day = datetime.datetime.now().strftime("%d")
             subscribers = []
-            response = requests.get(urls, headers=header, params=param)
+            response = requests.get(urls, headers=header, params = param)
             if response.status_code == 200:
+                retries = 0
                 response_json = response.json()
                 subscribers.append(response_json)
-#                write_to_s3(subscribers,current_year,current_month,current_day,current_time)
+                write_to_s3(subscribers,current_year,current_month,current_day,current_time)
                 paging_dict = response_json["paging"]
                 if "next" in paging_dict:
-                    urls = paging_dict["next"]
+                    #urls = paging_dict["next"]
+                    after = paging_dict["cursors"]["after"]
+                    param['after'] = after
                     n += 1
                     print (n)
                 else:
                     end_time = datetime.datetime.now()
                     print('process duration:',end_time - now)
                     break
+            # response status errors are not exceptions
+            # will go back to the try block with the url that caused the error
             else:
-                print(response.status_code)
+                retries += 1
+                print('response code:',response.status_code)
+                print('error reason:',response.reason)
+                print('retry times:', retries)
                 logging.error(f"Response status code is not 200: {response.status_code}")
                 logging.error(f"error reason:{response.reason}")
-                print(response.raise_for_status())
-                break
+
+        # log exception error message and go back to try block
         except requests.Timeout as timeout_exception:
+            retries += 1
+            print('The connection has timed out. Retry times:', retries)
             logging.error(f"The connection has timed out: {timeout_exception}")
         except requests.HTTPError as http_error:
+            retries += 1
+            print('The server returned an HTTP error. Retry times:', retries)
             logging.error(f"The server returned an error: {http_error}")
         except requests.ConnectionError as connection_error:
+            retries += 1
+            print('Encoutered a connection error. Retry times:', retries)
             logging.error(f"Encountered a connection error: {connection_error}")
+    if retries > 10:
+        logging.warning("Retried over 10 times! Process has been killed.")
+        # get the after value for generating the url manually
+        # without exposing the api token
+        logging.error(f"The cursor trying to access is {after}.")
     return subscribers
 
 #if __name__ == '__main__':
