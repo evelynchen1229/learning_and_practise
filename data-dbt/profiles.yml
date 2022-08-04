@@ -2,9 +2,9 @@ amplitude_event:
   outputs:
     dev:
       dbname: dev
-      host: redshift-cluster-1.ct0wmhwbmwm9.us-east-1.redshift.amazonaws.com
+      host: 
       password: 
-      port: 5439
+      port: 
       schema: dbt_amplitude
       threads: 1
       type: redshift
@@ -12,9 +12,9 @@ amplitude_event:
   outputs:
     test:
       dbname: dev
-      host: redshift-cluster-1.ct0wmhwbmwm9.us-east-1.redshift.amazonaws.com
+      host: 
       password: 
-      port: 5439
+      port: 
       schema: dbt_amplitude_test
       threads: 1
       type: redshift
@@ -26,7 +26,7 @@ postgres_template:
       dbname: template
       host: localhost
       pass: 
-      port: 5432
+      port: 
       schema: public
       threads: 1
       type: postgres
