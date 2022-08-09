@@ -35,7 +35,6 @@ robot_first_move = 1
 print(f"Robot's first move: {robot_first_move}")
 first_round = initial_tile - robot_first_move
 print(first_round)
-
 sticks_game(first_round)
 
 
